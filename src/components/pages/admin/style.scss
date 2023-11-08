@@ -1,0 +1,48 @@
+.parent-user {
+
+
+    .modal-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .user-item {
+        display: flex !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 20px !important;
+
+    }
+
+    .user-option {
+        display: flex !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        gap: 20px !important;
+    }
+
+    .button-delete {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+        gap: 15px;
+    }
+
+    .searchBar {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+        max-width: 300px;
+    }
+}
