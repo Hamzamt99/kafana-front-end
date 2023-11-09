@@ -32,7 +32,7 @@ export default function ForgotPassword() {
             const obj = {
                 email: e.target.email.value,
             };
-            const data = await axios.post(`${URL}/forgetPassword`, obj);
+            const data = await axios.post(`${URL}forgetPassword`, obj);
             if (data.status === 200) {
                 setAlert(true);
                 const numberToEncrypt = data.data.id;
@@ -44,6 +44,7 @@ export default function ForgotPassword() {
                 Cookies.save('#%5$', encryptedNumber)
             }
         } catch (e) {
+            console.log(e.message);
             setFaild(true);
             setEmail('');
         }

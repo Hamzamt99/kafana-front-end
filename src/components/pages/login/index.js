@@ -14,7 +14,8 @@ import {
     AlertIcon,
     Alert,
     InputRightElement,
-    InputGroup
+    InputGroup,
+    Spinner
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { signin } from '../../../store/reducers/user.reducer';
@@ -66,7 +67,7 @@ const LoginHeader = () => {
                 Login
             </Heading>
             <Text color="fg.muted" fontSize='17px'>
-                Don't have an account? <Link to="/">Sign up</Link>
+                Don't have an account? <Link to="/signup">Sign up</Link>
             </Text>
         </Box>
     );
@@ -80,6 +81,8 @@ const LoginForm = () => {
     const [isOpen, setOpen] = useState(false);
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
+    console.log(loading);
     const url = process.env.REACT_APP_URL;
 
     const handleCheckboxChange = () => {
@@ -93,12 +96,12 @@ const LoginForm = () => {
                 email: e.target.email.value,
                 password: e.target.password.value
             }
+            setLoading(true)
             const data = await axios.post(`${url}login`, null, {
                 headers: {
                     Authorization: `Basic ${btoa(`${obj.email}:${obj.password}`)}`
                 }
             });
-
             dispatch(signin(data.data));
             if (data.status === 200) {
                 if (isChecked) {
@@ -106,6 +109,7 @@ const LoginForm = () => {
                     const secretKey = process.env.SECRETKEY || 'kafana';
                     const encryptedData = CryptoJS.AES.encrypt(dataToEncrypt, secretKey).toString();
                     localStorage.setItem('Remember_Me', encryptedData);
+                    setLoading(false)
                 }
                 navigate('/')
 
@@ -170,9 +174,17 @@ const LoginForm = () => {
                         </Alert>
                     )}
                 </Stack>
-                <Button width='full' mt={4} type='submit'>
-                    Sign In
-                </Button>
+                {
+                    loading ? (
+                        <Button width='full' mt={4}>
+                            <Spinner />
+                        </Button>
+                    )
+                        :
+                        <Button width='full' mt={4} type='submit'>
+                            Sign In
+                        </Button>
+                }
             </form>
         </Box>
     );
