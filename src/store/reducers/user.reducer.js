@@ -36,6 +36,8 @@ export default (state = USER_STATE, action) => {
       return { ...state, updatedUser: payload }
     case "ALL_CLAIMED":
       return { ...state, allClaimed: payload }
+    case 'ONE_USERS':
+      return { ...state, oneUser: payload }
     default:
       return state
   }
@@ -55,6 +57,24 @@ export const getUser = () => async dispatch => {
       },
     });
     dispatch(getUsers(response.data));
+  } catch (error) {
+    console.error('Error fetching profile:', error);
+  }
+}
+
+export const getOneUser = (id) => async dispatch => {
+  try {
+    const token = cookies.load('user_session');
+    if (!token) {
+      console.log('invalid token');
+      return;
+    }
+    const response = await axios.get(`${url}users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch(getoneUsers(response.data));
   } catch (error) {
     console.error('Error fetching profile:', error);
   }
@@ -174,6 +194,11 @@ export const DecodeToken = () => ({
 export const getUsers = (users) => ({
   type: "ALL_USERS",
   payload: users,
+})
+
+export const getoneUsers = (user) => ({
+  type: "ONE_USERS",
+  payload: user,
 })
 
 export const getClaim = (users) => ({

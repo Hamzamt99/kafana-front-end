@@ -12,12 +12,11 @@ import NotFound from './components/pages/404';
 import Profile from './components/pages/profileDashboard/Profile';
 import Users from './components/pages/admin/Users';
 import Claimed from './components/pages/admin/Claimed';
-import AddDeal from './components/pages/addDeal';
+import User from './components/pages/profileDashboard/UserProfile'
 
 function App() {
   const [decode, setDecode] = useState(null);
   const state = useSelector(state => state.user);
-  const Logged = state.user.isLogged;
   const isAuth = cookies.load('user_session');
 
   useEffect(() => {
@@ -42,6 +41,7 @@ function App() {
                   <Route path="/deals" element={<AdminHome />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/claimed" element={<Claimed />} />
+                  <Route path="/userProfile/:id" element={<User />} />
                 </>
               )
             }

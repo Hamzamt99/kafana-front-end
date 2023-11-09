@@ -85,6 +85,26 @@ export const getClaim = () => async dispatch => {
     }
 };
 
+export const getUserClaim = (id) => async dispatch => {
+    try {
+        const token = cookies.load('user_session');
+        if (!token) {
+            console.log('invalid token');
+            return;
+        }
+        const response = await axios.get(`${url}claim/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        dispatch(getClaimed(response.data));
+    } catch (error) {
+        console.error('Error fetching following:', error);
+    }
+};
+
+
+
 export const removeClaim = (id) => async dispatch => {
     try {
         const response = await axios.delete(`${url}claim/${id}`);

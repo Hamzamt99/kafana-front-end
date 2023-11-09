@@ -87,6 +87,7 @@ function AddDeal() {
                                         onChange={(event) => {
                                             setheroImage(event.target.files[0]);
                                         }}
+                                        isRequired
                                     />
                                     <Image
                                         src={heroImage ? URL.createObjectURL(heroImage) : 'https://placehold.co/600x400'}

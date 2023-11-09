@@ -5,6 +5,7 @@ import { deleteUser, getUser, updateUser } from '../../../store/reducers/user.re
 import './style.scss';
 import { Alert, AlertIcon, Avatar, Editable, EditableInput, EditablePreview, FormControl } from '@chakra-ui/react';
 import { Button, Form, Table } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 export default function Users() {
     const dispatch = useDispatch();
@@ -20,13 +21,17 @@ export default function Users() {
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = state.allUsers ? state.allUsers.slice(indexOfFirstUser, indexOfLastUser) : [];
-
+    const navigate = useNavigate()
     const deleteHandler = (array) => {
         try {
             dispatch(deleteUser(array))
         } catch (e) {
             console.log(e.message);
         }
+    }
+
+    const navigating = (id) => {
+        navigate(`/userProfile/${id}`)
     }
     const updateHandler = (e) => {
         try {
@@ -75,7 +80,7 @@ export default function Users() {
                     <thead>
                         <tr>
                             <th>User_ID</th>
-                            <th>Name</th>
+                            <th>User</th>
                             <th>Status</th>
                             {
                                 select &&
@@ -91,7 +96,10 @@ export default function Users() {
                                     <tbody key={user.id}>
                                         <tr>
                                             <td style={{ width: '5%' }}>{user.id}</td>
-                                            <td style={{ fontWeight: 'bold' }}>{user.name}</td>
+                                            <div style={{ display: 'flex', gap: '30px', cursor: 'pointer' }} onClick={() => navigating(user.id)}>
+                                                <td style={{ fontWeight: 'bold' }}><Avatar src={user.Profile} /></td>
+                                                <td style={{ fontWeight: 'bold' }}>{user.name}</td>
+                                            </div>
                                             <td style={{ width: '15%' }}>
                                                 <Form.Select
                                                     id='Status'
