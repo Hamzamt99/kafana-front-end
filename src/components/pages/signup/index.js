@@ -22,7 +22,8 @@ import {
     Stack,
     Text,
     useDisclosure,
-    InputLeftAddon
+    InputLeftAddon,
+    Spinner
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
@@ -35,6 +36,7 @@ export default function SignUp() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = React.useRef();
     const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
     const url = process.env.REACT_APP_URL;
     const submitHandler = async (e) => {
         try {
@@ -48,12 +50,15 @@ export default function SignUp() {
                 phone: e.target.phone.value,
                 role: e.target.role.value
             }
+            setLoading(true)
             localStorage.setItem('email', obj.email)
             const signUp = await axios.post(`${url}signup`, obj)
             if (signUp.status === 200) {
+                setLoading(false)
                 navigate('/signin')
             }
         } catch (e) {
+            setLoading(false)
             console.log(e.response.data);
             setError(e.response.data);
             onOpen();
@@ -150,17 +155,26 @@ export default function SignUp() {
                                 </Link>
                             </Stack> */}
                                 <Stack spacing={10} pt={2}>
-                                    <Button
-                                        type='submit'
-                                        loadingText="Submitting"
-                                        size="lg"
-                                        bg={'blue.400'}
-                                        color={'white'}
-                                        _hover={{
-                                            bg: 'blue.500',
-                                        }}>
-                                        Sign up
-                                    </Button>
+                                    {
+                                        loading ? (
+                                            <Button width='full' mt={4}>
+                                                <Spinner />
+                                            </Button>
+                                        )
+                                            :
+                                            <Button
+                                                type='submit'
+                                                loadingText="Submitting"
+                                                size="lg"
+                                                bg={'blue.400'}
+                                                color={'white'}
+                                                _hover={{
+                                                    bg: 'blue.500',
+                                                }}>
+                                                Sign up
+                                            </Button>
+                                    }
+
                                 </Stack>
                                 <Stack pt={6}>
                                     <Text align={'center'}>
@@ -191,6 +205,7 @@ export default function SignUp() {
                     </AlertDialog>
                 </Stack>
             </Flex >
+
         </>
     )
 }
